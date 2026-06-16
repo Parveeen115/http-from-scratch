@@ -39,6 +39,11 @@ func handleClient(conn net.Conn) {
 		}
 
 		fmt.Printf("Recived: %s\n", buffer[:n])
+		req, err := ParseRequest(string(buffer[:n]))
+		if err != nil {
+			fmt.Println("Error", err)
+		}
+		fmt.Printf("Parsed request: %v\n", req)
 
 		response := "HTTP/1.1 200 OK\r\n" +
 			"Content-Length: 13\r\n" +
