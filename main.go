@@ -40,7 +40,6 @@ func handleClient(conn net.Conn) {
 
 		fmt.Printf("Recived: %s\n", buffer[:n])
 		req := ParseRequest(string(buffer[:n]))
-
 		fmt.Printf("Parsed request: %v\n", req)
 
 		res := Response{StatusCode: 200, StatusText: "OK", Headers: []string{"Content-Type: text/plain"}, Body: "happy birthday"}
