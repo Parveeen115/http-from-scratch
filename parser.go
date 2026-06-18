@@ -13,7 +13,7 @@ type Request struct {
 	Body    string
 }
 
-func ParseRequest(raw string) (Request, error) {
+func ParseRequest(raw string) Request {
 	var req Request
 	sep := strings.Split(raw, "\r\n")
 	fmt.Printf("seperate %q\n", sep)
@@ -36,5 +36,5 @@ func ParseRequest(raw string) (Request, error) {
 		}
 	}
 	fmt.Printf("header : %q\n", req)
-	return req, nil
+	return req
 }
