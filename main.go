@@ -6,6 +6,10 @@ import (
 )
 
 func main() {
+	HandleFunc(Handler{"Get /", func(req Request) Response {
+		return Response{StatusCode: 200, StatusText: "OK", Headers: []string{"Content-Type: text/plain"}, Body: "happy birthday"}
+	}})
+
 	listener, err := net.Listen("tcp", "localhost:8000")
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -41,8 +45,8 @@ func handleClient(conn net.Conn) {
 		fmt.Printf("Recived: %s\n", buffer[:n])
 		req := ParseRequest(string(buffer[:n]))
 		fmt.Printf("Parsed request: %v\n", req)
-
-		res := Response{StatusCode: 200, StatusText: "OK", Headers: []string{"Content-Type: text/plain"}, Body: "happy birthday"}
+		res := CallFunc(req)
+		//res := Response{StatusCode: 200, StatusText: "OK", Headers: []string{"Content-Type: text/plain"}, Body: "happy birthday"}
 
 		response := BuildResponse(res)
 		conn.Write([]byte(response))
