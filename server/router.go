@@ -1,4 +1,4 @@
-package main
+package server
 
 import "strings"
 
@@ -9,8 +9,8 @@ type Handler struct {
 
 var batch []Handler
 
-func HandleFunc(handler Handler) {
-	batch = append(batch, handler)
+func HandleFunc(route string, handle func(Request) Response) {
+	batch = append(batch, Handler{route, handle})
 }
 
 func CallFunc(req Request) Response {

@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -37,4 +37,18 @@ func ParseRequest(raw string) Request {
 	}
 	fmt.Printf("header : %q\n", req)
 	return req
+}
+
+func Query(req Request) map[string]string {
+	query := make(map[string]string)
+	devide := strings.Split(req.Path, "?")
+	pairs := strings.Split(devide[1], "&")
+	for _, v := range pairs {
+		d := strings.SplitN(v, "=", 2)
+		if len(d) < 2 {
+			continue
+		}
+		query[d[0]] = d[1]
+	}
+	return query
 }
