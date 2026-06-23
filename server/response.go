@@ -22,6 +22,5 @@ func BuildResponse(res Response) string {
 	lines = append(lines, "")
 	lines = append(lines, res.Body)
 	response := strings.Join(lines, "\r\n")
-	fmt.Printf("response %s\n", response)
 	return response
 }

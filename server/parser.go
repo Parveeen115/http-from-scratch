@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -10,16 +9,15 @@ type Request struct {
 	Path    string
 	Version string
 	Headers map[string]string
+	Param   map[string]string
 	Body    string
 }
 
 func ParseRequest(raw string) Request {
 	var req Request
 	sep := strings.Split(raw, "\r\n")
-	fmt.Printf("seperate %q\n", sep)
 	//method n shit
 	top := strings.Split(sep[0], " ")
-	fmt.Printf("top seperate %q\n", top)
 	req.Method = top[0]
 	req.Path = top[1]
 	req.Version = top[2]
@@ -35,8 +33,11 @@ func ParseRequest(raw string) Request {
 			req.Headers[parts[0]] = parts[1]
 		}
 	}
-	fmt.Printf("header : %q\n", req)
 	return req
+}
+
+func Param(param string, req Request) string {
+	return req.Param[param]
 }
 
 func Query(req Request) map[string]string {

@@ -34,15 +34,11 @@ func handleClient(conn net.Conn) {
 	for {
 		n, err := conn.Read(buffer)
 		if err != nil {
-			fmt.Println("error", err)
 			return
 		}
 
-		fmt.Printf("Recived: %s\n", buffer[:n])
 		req := ParseRequest(string(buffer[:n]))
-		fmt.Printf("Parsed request: %v\n", req)
 		res := CallFunc(req)
-		//res := Response{StatusCode: 200, StatusText: "OK", Headers: []string{"Content-Type: text/plain"}, Body: "happy birthday"}
 
 		response := BuildResponse(res)
 		conn.Write([]byte(response))

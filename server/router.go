@@ -14,12 +14,35 @@ func HandleFunc(route string, handle func(Request) Response) {
 }
 
 func CallFunc(req Request) Response {
+	req.Param = make(map[string]string)
 	for _, v := range batch {
 		routeMethod := strings.Split(v.Route, " ")
-		if routeMethod[1] != req.Path {
+		if routeMethod[0] != req.Method {
 			continue
 		}
-		return v.Handle(req)
+		methods := strings.Split(routeMethod[1], "/")
+		reqMethod := strings.Split(req.Path, "/")
+		if len(methods) != len(reqMethod) {
+			continue
+		}
+		check := true
+		for i := 0; i < len(methods); i++ {
+			param := strings.Contains(methods[i], ":")
+			if param {
+				check = true
+				req.Param[methods[i][1:]] = reqMethod[i]
+				continue
+			}
+			if methods[i] != reqMethod[i] {
+				check = false
+				break
+			}
+		}
+		if check {
+			return v.Handle(req)
+		} else {
+			continue
+		}
 	}
-	return Response{}
+	return Response{StatusCode: 404, StatusText: "not_found", Headers: []string{"content-type: text/plain"}, Body: "NOT FOUND"}
 }
